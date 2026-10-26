@@ -1,0 +1,3 @@
+/* STANCE / Takasu-sensei character sheet. */
+function stanceSprite(name,frame=0){const slots={block:[0,1],move:[1,1],must_stay:[2,1],leaf:[3,1],bg:[0,2],plant:[1,2],back:[2,2],restart:[3,2]};let slot=name==='player'?[((frame%4)+4)%4,0]:slots[name];if(!slot)return null;let key='stance:'+name+':'+(name==='player'?frame:0);if(sprites[key])return sprites[key];let im=images['stance-atlas-v2.png'];if(!im)return null;let w=im.width/4,h=im.height/3,c=document.createElement('canvas');c.width=256;c.height=256;let a=c.getContext('2d'),inset=name==='block'?.05:name==='bg'?.07:0;a.drawImage(im,slot[0]*w+w*inset,slot[1]*h+h*inset,w*(1-inset*2),h*(1-inset*2),0,0,256,256);sprites[key]=c;return c;}
+function warmAtlas(){return theme===9?'stance':theme===8?'bakery':'clinic';}

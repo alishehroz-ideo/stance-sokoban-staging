@@ -1,0 +1,11 @@
+class Sokoban {
+ constructor(level){this.id=level.id;this.map=level.map.map(r=>r.slice());this.boxes=[];this.targets=[];this.walls=[];this.stars=[];this.history=[];this.moves=0;this.pushes=0;this.collected=0;this.toggled=false;this.won=false;this.map.forEach((r,y)=>r.forEach((v,x)=>{if(v===4)this.player={x,y};if([3,5,11,30].includes(v))this.boxes.push({x,y,blue:v===11||v===30});if([2,5,10,30].includes(v))this.targets.push({x,y,blue:v===10||v===30});if((v>=6&&v<=9)||(v>=26&&v<=29))this.walls.push({x,y,dir:v>20?v-20:v});if(v===16||v>=26&&v<=29)this.stars.push({x,y});}));this.totalStars=this.stars.length;this.switchCount=this.countSwitch();}
+ at(a,x,y){return a.find(o=>o.x===x&&o.y===y)}
+ countSwitch(){return this.targets.filter(t=>t.blue&&this.boxes.some(b=>b.blue&&b.x===t.x&&b.y===t.y)).length}
+ blocked(x,y,dx,dy){let v=this.map[y]?.[x];if(v===undefined||v===0)return true;if(v>=12&&v<=15){let d=[[0,-1],[0,1],[-1,0],[1,0]][v-12];if(d[0]!==dx||d[1]!==dy)return true;}return !!this.at(this.walls,x,y)}
+ snapshot(){return JSON.stringify({player:this.player,boxes:this.boxes,walls:this.walls,stars:this.stars,moves:this.moves,pushes:this.pushes,collected:this.collected,toggled:this.toggled,switchCount:this.switchCount,won:this.won})}
+ move(dx,dy){if(this.won)return false;let x=this.player.x+dx,y=this.player.y+dy;if(this.blocked(x,y,dx,dy))return false;let b=this.at(this.boxes,x,y);if(b&&(this.blocked(x+dx,y+dy,dx,dy)||this.at(this.boxes,x+dx,y+dy)))return false;this.history.push(this.snapshot());if(b){b.x+=dx;b.y+=dy;this.pushes++;}this.player={x,y};this.moves++;let star=this.at(this.stars,x,y);if(star){this.stars.splice(this.stars.indexOf(star),1);this.collected++;}let n=this.countSwitch();if(n!==this.switchCount){this.toggled=!this.toggled;for(const w of this.walls){let d=[[0,-1],[0,1],[-1,0],[1,0]][w.dir-6],sign=this.toggled?1:-1;w.x+=d[0]*sign;w.y+=d[1]*sign;}this.switchCount=n;}this.won=this.targets.filter(t=>!t.blue).every(t=>this.boxes.some(b=>!b.blue&&b.x===t.x&&b.y===t.y));return true;}
+ undo(){if(!this.history.length)return false;Object.assign(this,JSON.parse(this.history.pop()));return true;}
+ get filled(){return this.targets.filter(t=>!t.blue&&this.boxes.some(b=>!b.blue&&b.x===t.x&&b.y===t.y)).length}
+}
+if(typeof module!=='undefined')module.exports=Sokoban;

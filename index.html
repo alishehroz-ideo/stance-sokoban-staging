@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- STANCE お片づけパズル, GameBull web build (Stage Mode). This page is the host-facing shell:
+     - the loading page (Unity IdeofuzionBridge template behaviour, playbook section 7): blurred backdrop baked from
+       the client's thumbnail, spinner, tenant icon from /context (gameLogoUrl, then gameBannerUrl) with the 4 s / 30 s
+       clocks, the client's icon as the built-in one;
+     - a frame filling the whole page (safe areas excepted; the client's own phone layout fits their board to it)
+       that runs the game (app.html) with the same launch URL, and the gamebull:close relay (trap W18). -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#3a2a1c">
+<title>STANCE | お片づけパズル</title>
+<link rel="icon" type="image/png" href="./gb/favicon-D36NQtiN.png">
+  <script type="module" crossorigin src="./gb/index-BDrfYUkt.js"></script>
+  <link rel="modulepreload" crossorigin href="./gb/nozoom-BwxvnWFh.js">
+  <link rel="stylesheet" crossorigin href="./gb/index-BunSok21.css">
+</head>
+<body>
+<iframe id="gb-frame" title="STANCE お片づけパズル" allow="autoplay; fullscreen; clipboard-write"></iframe>
+<div id="gb-loading">
+  <div id="unity-loading-bar">
+    <div id="unity-logo"><div id="gb-tenant-logo"></div><div id="gb-spinner"></div></div>
+    <div id="unity-progress-bar-empty"><div id="unity-progress-bar-full"></div></div>
+    <div id="unity-progress-percent">0%</div>
+  </div>
+</div>
+</body>
+</html>
